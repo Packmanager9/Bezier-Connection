@@ -3,10 +3,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 
     const squaretable = {} // this section of code is an optimization for use of the hypotenuse function on Line and LineOP objects
-    for(let t = 0;t<10000000;t++){
+    for (let t = 0; t < 10000000; t++) {
         squaretable[`${t}`] = Math.sqrt(t)
-        if(t > 999){
-            t+=9
+        if (t > 999) {
+            t += 9
         }
     }
     const gamepadAPI = {
@@ -109,58 +109,58 @@ window.addEventListener('DOMContentLoaded', (event) => {
         }
     }
 
-    class Vector{ // vector math and physics if you prefer this over vector components on circles
-        constructor(object = (new Point(0,0)), xmom = 0, ymom = 0){
+    class Vector { // vector math and physics if you prefer this over vector components on circles
+        constructor(object = (new Point(0, 0)), xmom = 0, ymom = 0) {
             this.xmom = xmom
             this.ymom = ymom
             this.object = object
         }
-        isToward(point){
+        isToward(point) {
             let link = new LineOP(this.object, point)
             let dis1 = link.sqrDis()
-            let dummy = new Point(this.object.x+this.xmom, this.object.y+this.ymom)
+            let dummy = new Point(this.object.x + this.xmom, this.object.y + this.ymom)
             let link2 = new LineOP(dummy, point)
             let dis2 = link2.sqrDis()
-            if(dis2 < dis1){
+            if (dis2 < dis1) {
                 return true
-            }else{
+            } else {
                 return false
             }
         }
-        rotate(angleGoal){
-            let link = new Line(this.xmom, this.ymom, 0,0)
+        rotate(angleGoal) {
+            let link = new Line(this.xmom, this.ymom, 0, 0)
             let length = link.hypotenuse()
             let x = (length * Math.cos(angleGoal))
             let y = (length * Math.sin(angleGoal))
             this.xmom = x
             this.ymom = y
         }
-        magnitude(){
-            return (new Line(this.xmom, this.ymom, 0,0)).hypotenuse()
+        magnitude() {
+            return (new Line(this.xmom, this.ymom, 0, 0)).hypotenuse()
         }
-        normalize(size = 1){
+        normalize(size = 1) {
             let magnitude = this.magnitude()
-            this.xmom/=magnitude
-            this.ymom/=magnitude
-            this.xmom*=size
-            this.ymom*=size
+            this.xmom /= magnitude
+            this.ymom /= magnitude
+            this.xmom *= size
+            this.ymom *= size
         }
-        multiply(vect){
-            let point = new Point(0,0)
-            let end = new Point(this.xmom+vect.xmom, this.ymom+vect.ymom)
+        multiply(vect) {
+            let point = new Point(0, 0)
+            let end = new Point(this.xmom + vect.xmom, this.ymom + vect.ymom)
             return point.pointDistance(end)
         }
-        add(vect){
-            return new Vector(this.object, this.xmom+vect.xmom, this.ymom+vect.ymom)
+        add(vect) {
+            return new Vector(this.object, this.xmom + vect.xmom, this.ymom + vect.ymom)
         }
-        subtract(vect){
-            return new Vector(this.object, this.xmom-vect.xmom, this.ymom-vect.ymom)
+        subtract(vect) {
+            return new Vector(this.object, this.xmom - vect.xmom, this.ymom - vect.ymom)
         }
-        divide(vect){
-            return new Vector(this.object, this.xmom/vect.xmom, this.ymom/vect.ymom) //be careful with this, I don't think this is right
+        divide(vect) {
+            return new Vector(this.object, this.xmom / vect.xmom, this.ymom / vect.ymom) //be careful with this, I don't think this is right
         }
-        draw(){
-            let dummy = new Point(this.object.x+this.xmom, this.object.y+this.ymom)
+        draw() {
+            let dummy = new Point(this.object.x + this.xmom, this.object.y + this.ymom)
             let link = new LineOP(this.object, dummy, "#FFFFFF", 1)
             link.draw()
         }
@@ -187,13 +187,13 @@ window.addEventListener('DOMContentLoaded', (event) => {
             let xdif = this.x1 - this.x2
             let ydif = this.y1 - this.y2
             let hypotenuse = (xdif * xdif) + (ydif * ydif)
-            if(hypotenuse < 10000000-1){
-                if(hypotenuse > 1000){
-                    return squaretable[`${Math.round(10*Math.round((hypotenuse*.1)))}`]
-                }else{
-                return squaretable[`${Math.round(hypotenuse)}`]
+            if (hypotenuse < 10000000 - 1) {
+                if (hypotenuse > 1000) {
+                    return squaretable[`${Math.round(10 * Math.round((hypotenuse * .1)))}`]
+                } else {
+                    return squaretable[`${Math.round(hypotenuse)}`]
                 }
-            }else{
+            } else {
                 return Math.sqrt(hypotenuse)
             }
         }
@@ -225,13 +225,13 @@ window.addEventListener('DOMContentLoaded', (event) => {
             let xdif = this.object.x - this.target.x
             let ydif = this.object.y - this.target.y
             let hypotenuse = (xdif * xdif) + (ydif * ydif)
-            if(hypotenuse < 10000000-1){
-                if(hypotenuse > 1000){
-                    return squaretable[`${Math.round(10*Math.round((hypotenuse*.1)))}`]
-                }else{
-                return squaretable[`${Math.round(hypotenuse)}`]
+            if (hypotenuse < 10000000 - 1) {
+                if (hypotenuse > 1000) {
+                    return squaretable[`${Math.round(10 * Math.round((hypotenuse * .1)))}`]
+                } else {
+                    return squaretable[`${Math.round(hypotenuse)}`]
                 }
-            }else{
+            } else {
                 return Math.sqrt(hypotenuse)
             }
         }
@@ -499,7 +499,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             }
             return false
         }
-    } 
+    }
     class CircleRing {
         constructor(x, y, radius, color, xmom = 0, ymom = 0, friction = 1, reflect = 0, strokeWidth = 0, strokeColor = "transparent") {
             this.x = x
@@ -773,25 +773,25 @@ window.addEventListener('DOMContentLoaded', (event) => {
             }
             return false
         }
-        adjustByFromDisplacement(x,y) {
+        adjustByFromDisplacement(x, y) {
             for (let t = 0; t < this.shapes.length; t++) {
-                if(typeof this.shapes[t].fromRatio == "number"){
-                    this.shapes[t].x+=x*this.shapes[t].fromRatio
-                    this.shapes[t].y+=y*this.shapes[t].fromRatio
+                if (typeof this.shapes[t].fromRatio == "number") {
+                    this.shapes[t].x += x * this.shapes[t].fromRatio
+                    this.shapes[t].y += y * this.shapes[t].fromRatio
                 }
             }
         }
-        adjustByToDisplacement(x,y) {
+        adjustByToDisplacement(x, y) {
             for (let t = 0; t < this.shapes.length; t++) {
-                if(typeof this.shapes[t].toRatio == "number"){
-                    this.shapes[t].x+=x*this.shapes[t].toRatio
-                    this.shapes[t].y+=y*this.shapes[t].toRatio
+                if (typeof this.shapes[t].toRatio == "number") {
+                    this.shapes[t].x += x * this.shapes[t].toRatio
+                    this.shapes[t].y += y * this.shapes[t].toRatio
                 }
             }
         }
-        mixIn(arr){
-            for(let t = 0;t<arr.length;t++){
-                for(let k = 0;k<arr[t].shapes.length;k++){
+        mixIn(arr) {
+            for (let t = 0; t < arr.length; t++) {
+                for (let k = 0; k < arr[t].shapes.length; k++) {
                     this.shapes.push(arr[t].shapes[k])
                 }
             }
@@ -848,7 +848,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             this.anchor.move()
         }
 
-    }  
+    }
     class SpringOP {
         constructor(body, anchor, length, width = 3, color = body.color) {
             this.body = body
@@ -858,10 +858,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
         }
         balance() {
             if (this.beam.hypotenuse() < this.length) {
-                this.body.xmom += ((this.body.x - this.anchor.x) / this.length) 
-                this.body.ymom += ((this.body.y - this.anchor.y) / this.length) 
-                this.anchor.xmom -= ((this.body.x - this.anchor.x) / this.length) 
-                this.anchor.ymom -= ((this.body.y - this.anchor.y) / this.length) 
+                this.body.xmom += ((this.body.x - this.anchor.x) / this.length)
+                this.body.ymom += ((this.body.y - this.anchor.y) / this.length)
+                this.anchor.xmom -= ((this.body.x - this.anchor.x) / this.length)
+                this.anchor.ymom -= ((this.body.y - this.anchor.y) / this.length)
             } else if (this.beam.hypotenuse() > this.length) {
                 this.body.xmom -= (this.body.x - this.anchor.x) / (this.length)
                 this.body.ymom -= (this.body.y - this.anchor.y) / (this.length)
@@ -980,25 +980,25 @@ window.addEventListener('DOMContentLoaded', (event) => {
             this.points = []
             this.flop = 0
             let angle = 0
-            this.size = size 
-            let line = new Line((Math.cos(angle)*size), (Math.sin(angle)*size), (Math.cos(angle+ ((Math.PI*2)/members))*size), (Math.sin(angle+ ((Math.PI*2)/members))*size) )
+            this.size = size
+            let line = new Line((Math.cos(angle) * size), (Math.sin(angle) * size), (Math.cos(angle + ((Math.PI * 2) / members)) * size), (Math.sin(angle + ((Math.PI * 2) / members)) * size))
             let distance = line.hypotenuse()
-            for(let t =0;t<members;t++){
-                let circ = new Circle(x+(Math.cos(angle)*size), y+(Math.sin(angle)*size), radius, color)
+            for (let t = 0; t < members; t++) {
+                let circ = new Circle(x + (Math.cos(angle) * size), y + (Math.sin(angle) * size), radius, color)
                 circ.reflect = 1
-                circ.bigbody = new Circle(x+(Math.cos(angle)*size), y+(Math.sin(angle)*size), distance, color)
+                circ.bigbody = new Circle(x + (Math.cos(angle) * size), y + (Math.sin(angle) * size), distance, color)
                 circ.draw()
                 circ.touch = []
                 this.points.push(circ)
-                angle += ((Math.PI*2)/members)
+                angle += ((Math.PI * 2) / members)
             }
 
-            for(let t =0;t<this.points.length;t++){
-                for(let k =0;k<this.points.length;k++){
-                    if(t!=k){
-                        if(this.points[k].bigbody.doesPerimeterTouch(this.points[t])){
-                        if(!this.points[k].touch.includes(t) && !this.points[t].touch.includes(k)){
-                                let spring = new SpringOP(this.points[k], this.points[t], (size*Math.PI)/members, 2, color)
+            for (let t = 0; t < this.points.length; t++) {
+                for (let k = 0; k < this.points.length; k++) {
+                    if (t != k) {
+                        if (this.points[k].bigbody.doesPerimeterTouch(this.points[t])) {
+                            if (!this.points[k].touch.includes(t) && !this.points[t].touch.includes(k)) {
+                                let spring = new SpringOP(this.points[k], this.points[t], (size * Math.PI) / members, 2, color)
                                 this.points[k].touch.push(t)
                                 this.points[t].touch.push(k)
                                 this.springs.push(spring)
@@ -1039,7 +1039,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             for (let t = 0; t < this.points.length; t++) {
                 this.points[t].x = this.centroid.x + (Math.cos(this.angle) * this.forceConstant)
                 this.points[t].y = this.centroid.y + (Math.sin(this.angle) * this.forceConstant)
-                this.angle += this.angleIncrement 
+                this.angle += this.angleIncrement
             }
         }
         balance() {
@@ -1057,24 +1057,24 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 this.link = new LineOP(this.points[s], this.centroid, 0, "transparent")
                 if (this.link.hypotenuse() != 0) {
 
-                    if(this.size < this.link.hypotenuse()){
-                        this.points[s].xmom -= (Math.cos(this.link.angle())*(this.link.hypotenuse())) * this.forceConstant*.1
-                        this.points[s].ymom -= (Math.sin(this.link.angle())*(this.link.hypotenuse())) * this.forceConstant*.1
-                    }else{
-                        this.points[s].xmom += (Math.cos(this.link.angle())*(this.link.hypotenuse())) * this.forceConstant*.1
-                        this.points[s].ymom += (Math.sin(this.link.angle())*(this.link.hypotenuse())) * this.forceConstant*.1
+                    if (this.size < this.link.hypotenuse()) {
+                        this.points[s].xmom -= (Math.cos(this.link.angle()) * (this.link.hypotenuse())) * this.forceConstant * .1
+                        this.points[s].ymom -= (Math.sin(this.link.angle()) * (this.link.hypotenuse())) * this.forceConstant * .1
+                    } else {
+                        this.points[s].xmom += (Math.cos(this.link.angle()) * (this.link.hypotenuse())) * this.forceConstant * .1
+                        this.points[s].ymom += (Math.sin(this.link.angle()) * (this.link.hypotenuse())) * this.forceConstant * .1
                     }
 
                     // this.points[s].xmom += (((this.points[s].x - this.centroid.x) / (this.link.hypotenuse()))) * this.forceConstant
                     // this.points[s].ymom += (((this.points[s].y - this.centroid.y) / (this.link.hypotenuse()))) * this.forceConstant
                 }
             }
-            if(this.flop%2 == 0){
-                for (let s =  0; s < this.springs.length; s++) {
+            if (this.flop % 2 == 0) {
+                for (let s = 0; s < this.springs.length; s++) {
                     this.springs[s].balance()
                 }
-            }else{
-                for (let s = this.springs.length-1;s>=0; s--) {
+            } else {
+                for (let s = this.springs.length - 1; s >= 0; s--) {
                     this.springs[s].balance()
                 }
             }
@@ -1082,7 +1082,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 this.points[s].move()
                 this.points[s].draw()
             }
-            for (let s =  0; s < this.springs.length; s++) {
+            for (let s = 0; s < this.springs.length; s++) {
                 this.springs[s].draw()
             }
             this.centroid.draw()
@@ -1176,19 +1176,19 @@ window.addEventListener('DOMContentLoaded', (event) => {
         }
     }
     function gamepad_control(object, speed = 1) { // basic control for objects using the controler
-//         console.log(gamepadAPI.axesStatus[1]*gamepadAPI.axesStatus[0]) //debugging
+        //         console.log(gamepadAPI.axesStatus[1]*gamepadAPI.axesStatus[0]) //debugging
         if (typeof object.body != 'undefined') {
-            if(typeof (gamepadAPI.axesStatus[1]) != 'undefined'){
-                if(typeof (gamepadAPI.axesStatus[0]) != 'undefined'){
-                object.body.x += (gamepadAPI.axesStatus[0] * speed)
-                object.body.y += (gamepadAPI.axesStatus[1] * speed)
+            if (typeof (gamepadAPI.axesStatus[1]) != 'undefined') {
+                if (typeof (gamepadAPI.axesStatus[0]) != 'undefined') {
+                    object.body.x += (gamepadAPI.axesStatus[0] * speed)
+                    object.body.y += (gamepadAPI.axesStatus[1] * speed)
                 }
             }
         } else if (typeof object != 'undefined') {
-            if(typeof (gamepadAPI.axesStatus[1]) != 'undefined'){
-                if(typeof (gamepadAPI.axesStatus[0]) != 'undefined'){
-                object.x += (gamepadAPI.axesStatus[0] * speed)
-                object.y += (gamepadAPI.axesStatus[1] * speed)
+            if (typeof (gamepadAPI.axesStatus[1]) != 'undefined') {
+                if (typeof (gamepadAPI.axesStatus[0]) != 'undefined') {
+                    object.x += (gamepadAPI.axesStatus[0] * speed)
+                    object.y += (gamepadAPI.axesStatus[1] * speed)
                 }
             }
         }
@@ -1247,26 +1247,26 @@ window.addEventListener('DOMContentLoaded', (event) => {
         return color;
     }
     function castBetween(from, to, granularity = 10, radius = 1) { //creates a sort of beam hitbox between two points, with a granularity (number of members over distance), with a radius defined as well
-            let limit = granularity
-            let shape_array = []
-            for (let t = 0; t < limit; t++) {
-                let circ = new Circle((from.x * (t / limit)) + (to.x * ((limit - t) / limit)), (from.y * (t / limit)) + (to.y * ((limit - t) / limit)), radius, "red")
-                circ.toRatio = t/limit
-                circ.fromRatio = (limit-t)/limit
-                shape_array.push(circ)
-            }
-            return (new Shape(shape_array))
+        let limit = granularity
+        let shape_array = []
+        for (let t = 0; t < limit; t++) {
+            let circ = new Circle((from.x * (t / limit)) + (to.x * ((limit - t) / limit)), (from.y * (t / limit)) + (to.y * ((limit - t) / limit)), radius, "red")
+            circ.toRatio = t / limit
+            circ.fromRatio = (limit - t) / limit
+            shape_array.push(circ)
+        }
+        return (new Shape(shape_array))
     }
     function castBetweenPoints(from, to, granularity = 10, radius = 1) { //creates a sort of beam hitbox between two points, with a granularity (number of members over distance), with a radius defined as well
-            let limit = granularity
-            let shape_array = []
-            for (let t = 0; t < limit; t++) {
-                let circ = new Circle((from.x * (t / limit)) + (to.x * ((limit - t) / limit)), (from.y * (t / limit)) + (to.y * ((limit - t) / limit)), radius, "red")
-                circ.toRatio = t/limit
-                circ.fromRatio = (limit-t)/limit
-                shape_array.push(circ)
-            }
-            return shape_array
+        let limit = granularity
+        let shape_array = []
+        for (let t = 0; t < limit; t++) {
+            let circ = new Circle((from.x * (t / limit)) + (to.x * ((limit - t) / limit)), (from.y * (t / limit)) + (to.y * ((limit - t) / limit)), radius, "red")
+            circ.toRatio = t / limit
+            circ.fromRatio = (limit - t) / limit
+            shape_array.push(circ)
+        }
+        return shape_array
     }
 
     let setup_canvas = document.getElementById('canvas') //getting canvas from document
@@ -1274,19 +1274,19 @@ window.addEventListener('DOMContentLoaded', (event) => {
     setUp(setup_canvas) // setting up canvas refrences, starting timer. 
 
     // object instantiation and creation happens here 
-    
 
-    class Disang{
-        constructor(dis, ang){
+
+    class Disang {
+        constructor(dis, ang) {
             this.dis = dis
             this.angle = ang
         }
     }
 
-    class Bezzy{
-        constructor(){
+    class Bezzy {
+        constructor() {
         }
-        construct(x,y,cx,cy,ex,ey){
+        construct(x, y, cx, cy, ex, ey) {
             this.color = "red"
             this.x = x
             this.y = y
@@ -1294,138 +1294,138 @@ window.addEventListener('DOMContentLoaded', (event) => {
             this.cy = cy
             this.ex = ex
             this.ey = ey
-           this.metapoint = new Circle((x+cx+ex)/3, (y+cy+ey)/3, 3, "#FFFFFF")
-           this.body =[...castBetweenPoints((new Point(this.x, this.y)), (new Point(this.ex, this.ey)), 200, 0 )]
-           for(let t = 0;t<=1;t+=.001){
-               this.body.push(this.getQuadraticXY(t))
-           }
-           this.hitbox = []
-           for(let t = 0;t<this.body.length;t++){
-               let link = new LineOP(this.body[t],this.metapoint)
-               let disang = new Disang(link.hypotenuse(), link.angle()+(Math.PI*2))
-               this.hitbox.push(disang)
-           }
-           this.constructed = 1
-           for(let t = 1;t<this.hitbox.length;t++){
-               let point = new Circle(this.metapoint.x+(Math.cos(this.hitbox[t-1].angle)*this.hitbox[t-1].dis), this.metapoint.y+(Math.sin(this.hitbox[t-1].angle)*this.hitbox[t-1].dis), 1, `rgb(0,${255-(t*.01)*(t*.05)},${t/2})`)
-               point.draw()
-           }
+            this.metapoint = new Circle((x + cx + ex) / 3, (y + cy + ey) / 3, 3, "#FFFFFF")
+            this.body = [...castBetweenPoints((new Point(this.x, this.y)), (new Point(this.ex, this.ey)), 200, 0)]
+            for (let t = 0; t <= 1; t += .001) {
+                this.body.push(this.getQuadraticXY(t))
+            }
+            this.hitbox = []
+            for (let t = 0; t < this.body.length; t++) {
+                let link = new LineOP(this.body[t], this.metapoint)
+                let disang = new Disang(link.hypotenuse(), link.angle() + (Math.PI * 2))
+                this.hitbox.push(disang)
+            }
+            this.constructed = 1
+            for (let t = 1; t < this.hitbox.length; t++) {
+                let point = new Circle(this.metapoint.x + (Math.cos(this.hitbox[t - 1].angle) * this.hitbox[t - 1].dis), this.metapoint.y + (Math.sin(this.hitbox[t - 1].angle) * this.hitbox[t - 1].dis), 1, `rgb(0,${255 - (t * .01) * (t * .05)},${t / 2})`)
+                point.draw()
+            }
         }
-        hitcheck(point){
-            let link = new LineOP(point,this.metapoint)
-            let angle = (link.angle()+(Math.PI*2))
+        hitcheck(point) {
+            let link = new LineOP(point, this.metapoint)
+            let angle = (link.angle() + (Math.PI * 2))
             let dis = link.hypotenuse()
-            for(let t = 1;t<this.hitbox.length;t++){
-                if(Math.abs(this.hitbox[t].angle - this.hitbox[t-1].angle ) > 1){
+            for (let t = 1; t < this.hitbox.length; t++) {
+                if (Math.abs(this.hitbox[t].angle - this.hitbox[t - 1].angle) > 1) {
                     continue
                 }
-                if(angle.between(this.hitbox[t].angle,this.hitbox[t-1].angle)){
-                    if(dis < (this.hitbox[t].dis+this.hitbox[t-1].dis)*.5){
-                        point.color = `rgb(${t/2},${255-(t*.5)},0)`
+                if (angle.between(this.hitbox[t].angle, this.hitbox[t - 1].angle)) {
+                    if (dis < (this.hitbox[t].dis + this.hitbox[t - 1].dis) * .5) {
+                        point.color = `rgb(${t / 2},${255 - (t * .5)},0)`
                         return true
                     }
                 }
             }
             return false
         }
-        draw(){
-           for(let t = 1;t<this.hitbox.length;t++){
-            let point = new Circle(this.metapoint.x+(Math.cos(this.hitbox[t-1].angle)*this.hitbox[t-1].dis), this.metapoint.y+(Math.sin(this.hitbox[t-1].angle)*this.hitbox[t-1].dis), 1, `rgb(0,${255-(t*.01)*(t*.05)},${t/2})`)
-            point.draw()
-        }
-        this.metapoint.draw()
-        canvas_context.beginPath()
-        canvas_context.strokeStyle = getRandomColor()
-        canvas_context.bezierCurveTo(this.x,this.y, this.cx,this.cy, this.ex, this.ey)
-        canvas_context.fillStyle = this.color
-        canvas_context.strokeStyle = this.color
-        canvas_context.lineWidth = 3
-        canvas_context.stroke()
-        for(let t= 0;t<100;t++){
-            let dot = new Circle(Math.random()*700,Math.random()*700,.2, "white")
-            if(this.hitcheck(dot)){
-                dot.draw()
+        draw() {
+            for (let t = 1; t < this.hitbox.length; t++) {
+                let point = new Circle(this.metapoint.x + (Math.cos(this.hitbox[t - 1].angle) * this.hitbox[t - 1].dis), this.metapoint.y + (Math.sin(this.hitbox[t - 1].angle) * this.hitbox[t - 1].dis), 1, `rgb(0,${255 - (t * .01) * (t * .05)},${t / 2})`)
+                point.draw()
+            }
+            this.metapoint.draw()
+            canvas_context.beginPath()
+            canvas_context.strokeStyle = getRandomColor()
+            canvas_context.bezierCurveTo(this.x, this.y, this.cx, this.cy, this.ex, this.ey)
+            canvas_context.fillStyle = this.color
+            canvas_context.strokeStyle = this.color
+            canvas_context.lineWidth = 3
+            canvas_context.stroke()
+            for (let t = 0; t < 100; t++) {
+                let dot = new Circle(Math.random() * 700, Math.random() * 700, .2, "white")
+                if (this.hitcheck(dot)) {
+                    dot.draw()
+                }
             }
         }
+        getQuadraticXY(t) {
+            return new Point(((1 - t) * (1 - t)) * this.x + 2 * (1 - t) * t * this.cx + t * t * this.ex, ((1 - t) * (1 - t)) * this.y + 2 * (1 - t) * t * this.cy + t * t * this.ey)
         }
-     getQuadraticXY(t) {
-        return new Point(((1-t) * (1-t)) * this.x + 2 * (1-t) * t * this.cx + t * t * this.ex,  ((1-t) * (1-t)) * this.y + 2 * (1-t) * t * this.cy + t * t * this.ey)
-      }
     }
 
-    
-    Number.prototype.between = function(a, b, inclusive) {
+
+    Number.prototype.between = function (a, b, inclusive) {
         var min = Math.min(a, b),
-          max = Math.max(a, b);
+            max = Math.max(a, b);
         return inclusive ? this >= min && this <= max : this > min && this < max;
-      }
+    }
 
     let angle = 0
 
     let bexxy = new Bezzy()
-    bexxy.construct(Math.random()*700,Math.random()*700, Math.random()*700, Math.random()*700, Math.random()*700,Math.random()*700)
+    bexxy.construct(Math.random() * 700, Math.random() * 700, Math.random() * 700, Math.random() * 700, Math.random() * 700, Math.random() * 700)
 
     function main() {
-        angle+=.01
+        angle += .01
         // canvas_context.clearRect(0, 0, canvas.width, canvas.height)  // refreshes the image
 
         bexxy.draw()
-        if(bexxy.hitcheck(TIP_engine)){
+        if (bexxy.hitcheck(TIP_engine)) {
             bexxy.color = "#00FF00"
-        }else{
+        } else {
             bexxy.color = "#FF0000"
             // console.log(TIP_engine, bexxy)
         }
-    //     gamepadAPI.update() //checks for button presses/stick movement on the connected controller)
-    //     // // game code goes here
-    //     canvas_context.beginPath()
-    //     canvas_context.strokeStyle = getRandomColor()
-    //     // canvas_context.quadraticCurveTo(100,100, TIP_engine.y,TIP_engine.x)
-    //     //  canvas_context.bezierCurveTo(640, 200, TIP_engine.x, TIP_engine.y, 640,400)
-    //     //  canvas_context.bezierCurveTo(640, 400, 640-TIP_engine.x, TIP_engine.y, 640,200)
+        //     gamepadAPI.update() //checks for button presses/stick movement on the connected controller)
+        //     // // game code goes here
+        //     canvas_context.beginPath()
+        //     canvas_context.strokeStyle = getRandomColor()
+        //     // canvas_context.quadraticCurveTo(100,100, TIP_engine.y,TIP_engine.x)
+        //     //  canvas_context.bezierCurveTo(640, 200, TIP_engine.x, TIP_engine.y, 640,400)
+        //     //  canvas_context.bezierCurveTo(640, 400, 640-TIP_engine.x, TIP_engine.y, 640,200)
 
-    //     let dynamix= 40 * Math.cos(angle)
-    //     let dynmany= 40 * Math.sin(angle)
-    //     let x = TIP_engine.x
-    //     let y = TIP_engine.y
-    //     // for(let t = 0;t<100;t++){
-    //     //  canvas_context.bezierCurveTo(x, y-30, x, y+30, x+20,y)
+        //     let dynamix= 40 * Math.cos(angle)
+        //     let dynmany= 40 * Math.sin(angle)
+        //     let x = TIP_engine.x
+        //     let y = TIP_engine.y
+        //     // for(let t = 0;t<100;t++){
+        //     //  canvas_context.bezierCurveTo(x, y-30, x, y+30, x+20,y)
 
-    //     //  x+=dynamix
-    //     //  y+=dynmany
-    //     // //  y+=TIP_engine.y/10
-    //     // }
+        //     //  x+=dynamix
+        //     //  y+=dynmany
+        //     // //  y+=TIP_engine.y/10
+        //     // }
 
 
-    // let link = (new Line(350, 350, TIP_engine.x, TIP_engine.y)).hypotenuse()
-    //     for(let t = 0;t<12;t++){
-    //         canvas_context.bezierCurveTo(350, 350, 350-Math.cos(angle+(Math.PI/3))*link*.5,350-Math.sin(angle+(Math.PI/3))*link*.5, 350+Math.cos(angle)*link,350+Math.sin(angle)*link)
-    //         angle += Math.PI/6
-    //     }
-    //     // canvas_context.moveTo(350,350)
+        // let link = (new Line(350, 350, TIP_engine.x, TIP_engine.y)).hypotenuse()
+        //     for(let t = 0;t<12;t++){
+        //         canvas_context.bezierCurveTo(350, 350, 350-Math.cos(angle+(Math.PI/3))*link*.5,350-Math.sin(angle+(Math.PI/3))*link*.5, 350+Math.cos(angle)*link,350+Math.sin(angle)*link)
+        //         angle += Math.PI/6
+        //     }
+        //     // canvas_context.moveTo(350,350)
 
-    //     canvas_context.fillStyle = "red"
-    //     canvas_context.fill()
-    //     // canvas_context.stroke()
-            
+        //     canvas_context.fillStyle = "red"
+        //     canvas_context.fill()
+        //     // canvas_context.stroke()
+
     }
 
 
     function getQuadraticXY(t, sx, sy, cp1x, cp1y, ex, ey) {
         return {
-          x: (1-t) * (1-t) * sx + 2 * (1-t) * t * cp1x + t * t * ex,
-          y: (1-t) * (1-t) * sy + 2 * (1-t) * t * cp1y + t * t * ey
+            x: (1 - t) * (1 - t) * sx + 2 * (1 - t) * t * cp1x + t * t * ex,
+            y: (1 - t) * (1 - t) * sy + 2 * (1 - t) * t * cp1y + t * t * ey
         };
-      }
+    }
 
 
     function getBezierXY(t, sx, sy, cp1x, cp1y, cp2x, cp2y, ex, ey) {
         return {
-          x: Math.pow(1-t,3) * sx + 3 * t * Math.pow(1 - t, 2) * cp1x 
-            + 3 * t * t * (1 - t) * cp2x + t * t * t * ex,
-          y: Math.pow(1-t,3) * sy + 3 * t * Math.pow(1 - t, 2) * cp1y 
-            + 3 * t * t * (1 - t) * cp2y + t * t * t * ey
+            x: Math.pow(1 - t, 3) * sx + 3 * t * Math.pow(1 - t, 2) * cp1x
+                + 3 * t * t * (1 - t) * cp2x + t * t * t * ex,
+            y: Math.pow(1 - t, 3) * sy + 3 * t * Math.pow(1 - t, 2) * cp1y
+                + 3 * t * t * (1 - t) * cp2y + t * t * t * ey
         };
-      }
+    }
 
 })
