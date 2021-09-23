@@ -1295,12 +1295,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
             this.ex = ex
             this.ey = ey
            this.metapoint = new Circle((x+cx+ex)/3, (y+cy+ey)/3, 3, "#FFFFFF")
-
            this.body =[...castBetweenPoints((new Point(this.x, this.y)), (new Point(this.ex, this.ey)), 200, 0 )]
            for(let t = 0;t<=1;t+=.001){
                this.body.push(this.getQuadraticXY(t))
            }
-
            this.hitbox = []
            for(let t = 0;t<this.body.length;t++){
                let link = new LineOP(this.body[t],this.metapoint)
@@ -1309,20 +1307,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
            }
            this.constructed = 1
            for(let t = 1;t<this.hitbox.length;t++){
-               
                let point = new Circle(this.metapoint.x+(Math.cos(this.hitbox[t-1].angle)*this.hitbox[t-1].dis), this.metapoint.y+(Math.sin(this.hitbox[t-1].angle)*this.hitbox[t-1].dis), 1, `rgb(0,${255-(t*.01)*(t*.05)},${t/2})`)
                point.draw()
-  
            }
-
         }
         hitcheck(point){
-            
             let link = new LineOP(point,this.metapoint)
             let angle = (link.angle()+(Math.PI*2))
             let dis = link.hypotenuse()
             for(let t = 1;t<this.hitbox.length;t++){
-
                 if(Math.abs(this.hitbox[t].angle - this.hitbox[t-1].angle ) > 1){
                     continue
                 }
@@ -1333,23 +1326,17 @@ window.addEventListener('DOMContentLoaded', (event) => {
                     }
                 }
             }
-
             return false
         }
         draw(){
-
            for(let t = 1;t<this.hitbox.length;t++){
-               
             let point = new Circle(this.metapoint.x+(Math.cos(this.hitbox[t-1].angle)*this.hitbox[t-1].dis), this.metapoint.y+(Math.sin(this.hitbox[t-1].angle)*this.hitbox[t-1].dis), 1, `rgb(0,${255-(t*.01)*(t*.05)},${t/2})`)
             point.draw()
-
         }
-            this.metapoint.draw()
-
+        this.metapoint.draw()
         canvas_context.beginPath()
         canvas_context.strokeStyle = getRandomColor()
         canvas_context.bezierCurveTo(this.x,this.y, this.cx,this.cy, this.ex, this.ey)
-
         canvas_context.fillStyle = this.color
         canvas_context.strokeStyle = this.color
         canvas_context.lineWidth = 3
@@ -1360,7 +1347,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 dot.draw()
             }
         }
-
         }
      getQuadraticXY(t) {
         return new Point(((1-t) * (1-t)) * this.x + 2 * (1-t) * t * this.cx + t * t * this.ex,  ((1-t) * (1-t)) * this.y + 2 * (1-t) * t * this.cy + t * t * this.ey)
@@ -1368,12 +1354,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
 
     
-    let windbox = []
-
     Number.prototype.between = function(a, b, inclusive) {
         var min = Math.min(a, b),
           max = Math.max(a, b);
-      
         return inclusive ? this >= min && this <= max : this > min && this < max;
       }
 
