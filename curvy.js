@@ -1159,12 +1159,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
             TIP_engine.x = XS_engine
             TIP_engine.y = YS_engine
             TIP_engine.body = TIP_engine
+            window.removeEventListener("pointermove", continued_stimuli);
+            console.log(TIP_engine)
             // example usage: if(object.isPointInside(TIP_engine)){ take action }
         });
         window.addEventListener('pointermove', continued_stimuli);
 
         window.addEventListener('pointerup', e => {
-            // window.removeEventListener("pointermove", continued_stimuli);
+            // 
         })
         function continued_stimuli(e) {
             FLEX_engine = canvas.getBoundingClientRect();
@@ -1290,13 +1292,13 @@ window.addEventListener('DOMContentLoaded', (event) => {
             this.color = "red"
             this.x = x
             this.y = y
-            this.cx = cx
+            this.cx = cx 
             this.cy = cy
             this.ex = ex
             this.ey = ey
             this.metapoint = new Circle((x + cx + ex) / 3, (y + cy + ey) / 3, 3, "#FFFFFF")
             this.body = [...castBetweenPoints((new Point(this.x, this.y)), (new Point(this.ex, this.ey)), 200, 0)]
-            for (let t = 0; t <= 1; t += .001) {
+            for (let t = 0; t <= 1; t += .01) {
                 this.body.push(this.getQuadraticXY(t))
             }
             this.hitbox = []
@@ -1333,10 +1335,21 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 let point = new Circle(this.metapoint.x + (Math.cos(this.hitbox[t - 1].angle) * this.hitbox[t - 1].dis), this.metapoint.y + (Math.sin(this.hitbox[t - 1].angle) * this.hitbox[t - 1].dis), 1, `rgb(0,${255 - (t * .01) * (t * .05)},${t / 2})`)
                 point.draw()
             }
+            // this.metapoint.x = TIP_engine.x
+            // this.metapoint.y = TIP_engine.y
+            // this.cx = TIP_engine.x
+            // this.cy = TIP_engine.y
             this.metapoint.draw()
             canvas_context.beginPath()
             canvas_context.strokeStyle = getRandomColor()
-            canvas_context.bezierCurveTo(this.x, this.y, this.cx, this.cy, this.ex, this.ey)
+
+            this.median = new Point((this.x+this.ex) *.5, (this.y+this.ey) *.5)
+
+            let angle = (new LineOP(this.median, this.metapoint)).angle()
+            let dis = (new LineOP(this.median, this.metapoint)).hypotenuse()
+
+
+            canvas_context.bezierCurveTo(this.x, this.y, this.cx-(Math.cos(angle)*dis*.38), this.cy-(Math.sin(angle)*dis*.38), this.ex, this.ey)
             canvas_context.fillStyle = this.color
             canvas_context.strokeStyle = this.color
             canvas_context.lineWidth = 3
@@ -1349,7 +1362,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             }
         }
         getQuadraticXY(t) {
-            return new Point(((1 - t) * (1 - t)) * this.x + 2 * (1 - t) * t * this.cx + t * t * this.ex, ((1 - t) * (1 - t)) * this.y + 2 * (1 - t) * t * this.cy + t * t * this.ey)
+            return new Point((((1 - t) * (1 - t)) * this.x )+ (2 * (1 - t) * t * this.cx) + (t * t * this.ex), (((1 - t) * (1 - t)) * this.y) + (2 * (1 - t) * t * this.cy) + (t * t * this.ey))
         }
     }
 
@@ -1364,6 +1377,25 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     let bexxy = new Bezzy()
     bexxy.construct(Math.random() * 700, Math.random() * 700, Math.random() * 700, Math.random() * 700, Math.random() * 700, Math.random() * 700)
+    // bexxy.construct(350, 100, 50, 50, 100, 350)
+
+    // 0x, 335y
+    //431 : 468
+    //423 : 424
+
+
+    //100x, 335y
+    //431 : 457
+    //423 : 430
+
+    //100x, 0y
+    //431 : 457
+    //423 : 461
+
+    //100x, 100y
+    //431 : 457
+    //423 : 448
+
 
     function main() {
         angle += .01
@@ -1427,5 +1459,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 + 3 * t * t * (1 - t) * cp2y + t * t * t * ey
         };
     }
-
+    function getQuadraticAngle(t, sx, sy, cp1x, cp1y, ex, ey) {
+        var dx = 2*(1-t)*(cp1x-sx) + 2*t*(ex-cp1x);
+        var dy = 2*(1-t)*(cp1y-sy) + 2*t*(ey-cp1y);
+        return -Math.atan2(dx, dy) + 0.5*Math.PI;
+      }
+      function getBezierAngle(t, sx, sy, cp1x, cp1y, cp2x, cp2y, ex, ey) {
+        var dx = Math.pow(1-t, 2)*(cp1x-sx) + 2*t*(1-t)*(cp2x-cp1x) + t * t * (ex - cp2x);
+        var dy = Math.pow(1-t, 2)*(cp1y-sy) + 2*t*(1-t)*(cp2y-cp1y) + t * t * (ey - cp2y);
+        return -Math.atan2(dx, dy) + 0.5*Math.PI;
+      }
 })
